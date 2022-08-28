@@ -23,11 +23,16 @@ public class Restaurante {
     //Metodos
 
     public void iniciarPedido(String nombreCliente, String direccionCliente) {
-        
+      
+        pedidoEnCurso = new Pedido(nombreCliente, direccionCliente);
+
     }
 
     public void cerrarYGuardarPedidoEnCurso() {
         
+
+
+
     }
 
     public void cargarInformacionRestaurante(File archivoIngredientes, File archivoMenu, File archivoCombos) {
