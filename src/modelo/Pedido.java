@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Pedido {
     //Atributos
 
-    private int numeroPedidos;
+    private static int numeroPedidos = 0;
     private int idPedido;
     private String nombreCliente;
     private String direccionCliente;
@@ -24,6 +24,8 @@ public class Pedido {
 
     public void agregarProducto(Producto nuvoItem) {
         
+        itemsPedido.add(nuvoItem);
+
     }
 
     private int getPrecioNetoPedido() {
@@ -50,11 +52,24 @@ public class Pedido {
 
     }
 
+    private int generarId(){
+
+        int id = 0;
+
+        return id;
+
+    }
+
     //Constructor
     
     public Pedido(String nombreCliente, String direccionCliente) {
         this.nombreCliente = nombreCliente;
         this.direccionCliente = direccionCliente;
+        this.idPedido = generarId();
+
+        numeroPedidos += 1;
+
+
     }
 
 }
