@@ -1,23 +1,28 @@
 package modelo;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import procesamiento.Combo;
-import modelo.Pedido;
-import modelo.ProductoMenu;
-import modelo.Ingrediente;
 
 public class Restaurante {
     //Atributos
 
-    private  ArrayList<Combo> combos;
     private HashMap<Integer, Pedido> pedidos; 
     private Pedido pedidoEnCurso;
-    private ArrayList<Ingrediente> ingredientes;
-    private ArrayList<ProductoMenu> menuBase;
+    
+    private HashMap<String, Ingrediente> ingredientes;
+    private HashMap<String, ProductoMenu> menuBase;
+    private HashMap<String, Combo> combos;
+
+    private String menuTexto;
+    private HashMap<Integer, String> mapaOpcionesMenu;
     
 
     //Metodos
@@ -35,8 +40,91 @@ public class Restaurante {
 
     }
 
-    public void cargarInformacionRestaurante(File archivoIngredientes, File archivoMenu, File archivoCombos) {
+    public void cargarInformacionRestaurante(File archivoIngredientes, File archivoMenu, File archivoCombos) throws FileNotFoundException, IOException, NumberFormatException {
+        int numeroMenu = 0;
+
+        BufferedReader br = new BufferedReader(new FileReader(archivoMenu));
+		String linea = br.readLine();
+		linea = br.readLine();
+
+        //crear menú base
+        menuTexto = menuTexto + "***Productos***\n";
+
+        while (linea != null) {
+            String[] partes = linea.split(";");
+            String nombreProducto = partes[0];
+            int precio = Integer.parseInt(partes[1]);
+            
+            ProductoMenu nuevoProducto = new ProductoMenu(nombreProducto, precio);
+
+            menuBase.put(nombreProducto, nuevoProducto);
+
+            menuTexto = menuTexto + numeroMenu +") " + nombreProducto + ": " + precio + "\n";
+            mapaOpcionesMenu.put(numeroMenu, nombreProducto);
+
+            numeroMenu++;
+        }
         
+        br.close();
+
+        br = new BufferedReader(new FileReader(archivoIngredientes));
+        linea = br.readLine();
+
+        //Crear combos
+        menuTexto = menuTexto + "\n***Combos***\n";
+
+        while(linea != null) {
+            String[] partes = linea.split(";");
+            String nombreCombo = partes[0];
+            double descuento = Double.parseDouble(partes[1].replace("%","")) / 100;
+
+            Combo nuevoCombo = new Combo(nombreCombo, descuento);
+
+            String contenidos = "";
+
+            for (int i = 2; i < partes.length; i++) {
+                String nombreProducto = partes[i];
+                Producto productoAgregar = menuBase.get(nombreProducto);
+
+                nuevoCombo.agregarItemACombo(productoAgregar);
+
+                contenidos = contenidos + nombreProducto + "\n";
+            }
+
+            int precioCombo = nuevoCombo.getPrecio();
+
+            menuTexto = menuTexto + numeroMenu +") " + nombreCombo + ": " + precioCombo + "\n" + contenidos + "\n";
+            mapaOpcionesMenu.put(numeroMenu, nombreCombo);
+
+            numeroMenu++;
+
+        }
+
+        br.close();
+
+        br = new BufferedReader(new FileReader(archivoIngredientes));
+        linea = br.readLine();
+
+        //crear lista ingredientes
+        menuTexto = menuTexto + "\n***Ingredientes Extra***\n";
+
+        while (linea != null) {
+            String[] partes = linea.split(";");
+            String nombreIngrediente = partes[0];
+            int precio = Integer.parseInt(partes[1]);
+            
+            Ingrediente nuevoIngrediente = new Ingrediente(nombreIngrediente, precio);
+
+            ingredientes.put(nombreIngrediente, nuevoIngrediente);
+
+            menuTexto = menuTexto + numeroMenu +") " + nombreIngrediente + ": " + precio + "\n";
+            mapaOpcionesMenu.put(numeroMenu, nombreIngrediente);
+
+        }
+
+        br.close();
+        
+
     }
 
     private void CargarIngredientes(File archivoIngredientes) {

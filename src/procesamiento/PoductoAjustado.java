@@ -1,8 +1,9 @@
 package procesamiento;
 
+import modelo.Producto;
 import modelo.ProductoMenu;
 
-public class PoductoAjustado {
+public class PoductoAjustado implements Producto{
     //Atributos 
 
     private ProductoMenu base;

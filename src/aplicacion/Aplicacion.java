@@ -3,12 +3,8 @@ package aplicacion;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 import modelo.Restaurante;
 
@@ -43,10 +39,9 @@ public class Aplicacion {
 
     public void mostrarMenu() {
         System.out.println("\nOpciones de la aplicación\n");
-		System.out.println("1. Cargar información del restaurante");
-		System.out.println("2. Iniciar un nuevo pedido");
-        System.out.println("3. cerrar pedido actual");
-		System.out.println("4. Consultar un pedido");
+		System.out.println("1. Iniciar un nuevo pedido");
+		System.out.println("2. Consultar un pedido");
+        System.out.println("3. Consultar el menú");
 		System.out.println("5. Salir de la aplicación\n");
     }
 
@@ -70,7 +65,7 @@ public class Aplicacion {
 		return null;
 	}
 
-    public void cargarInformacion() {
+    public void cargarInformacion()  throws FileNotFoundException, IOException {
         System.out.println("\n" + "Cargar un archivo de atletas" + "\n");
 
         File archivoIngredientes = new File("./data/ingredientes.txt");

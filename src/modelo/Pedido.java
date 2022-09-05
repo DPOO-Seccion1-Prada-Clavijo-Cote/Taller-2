@@ -67,7 +67,7 @@ public class Pedido {
         this.direccionCliente = direccionCliente;
         this.idPedido = generarId();
 
-        numeroPedidos += 1;
+        Pedido.numeroPedidos += 1;
 
 
     }
