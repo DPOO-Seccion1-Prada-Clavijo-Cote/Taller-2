@@ -1,4 +1,4 @@
-package modelo;
+package original.modelo;
 
 public class Ingrediente implements Cloneable {
     //Atributos

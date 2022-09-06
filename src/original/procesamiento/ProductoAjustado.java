@@ -1,10 +1,10 @@
-package procesamiento;
+package original.procesamiento;
 
 import java.util.ArrayList;
 
-import modelo.Ingrediente;
-import modelo.Producto;
-import modelo.ProductoMenu;
+import original.modelo.Ingrediente;
+import original.modelo.Producto;
+import original.modelo.ProductoMenu;
 
 public class ProductoAjustado implements Producto{
     //Atributos 

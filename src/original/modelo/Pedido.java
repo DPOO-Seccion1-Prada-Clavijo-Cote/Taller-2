@@ -1,11 +1,12 @@
-package modelo;
+package original.modelo;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.File;
-
 import java.util.ArrayList;
 import java.util.Random;
+
+import original.modelo.Producto;
 
 public class Pedido {
     //Atributos

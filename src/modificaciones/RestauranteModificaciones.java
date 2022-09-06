@@ -1,4 +1,4 @@
-package modelo;
+package modificaciones;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,18 +9,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
-import procesamiento.Combo;
-import procesamiento.ProductoAjustado;
-
-public class Restaurante {
+public class RestauranteModificaciones {
     //Atributos
 
-    private HashMap<Integer, Pedido> pedidos; 
-    private Pedido pedidoEnCurso;
+    private HashMap<Integer, PedidoModificaciones> pedidos; 
+    private PedidoModificaciones pedidoEnCurso;
     
-    private HashMap<String, Ingrediente> ingredientes;
-    private HashMap<String, ProductoMenu> menuBase;
-    private HashMap<String, Combo> combos;
+    private HashMap<String, IngredienteModificaciones> ingredientes;
+    private HashMap<String, ProductoMenuModificaciones> menuBase;
+    private HashMap<String, ComboModificaciones> combos;
 
     private String menuTexto;
     private String menuIngredientes;
@@ -35,7 +32,7 @@ public class Restaurante {
 
     public void iniciarPedido(String nombreCliente, String direccionCliente) throws CloneNotSupportedException {
       
-        pedidoEnCurso = new Pedido(nombreCliente, direccionCliente);
+        pedidoEnCurso = new PedidoModificaciones(nombreCliente, direccionCliente);
 
         boolean haciendoPedido = true;
 
@@ -124,7 +121,7 @@ public class Restaurante {
             String nombreIngrediente = partes[0];
             int precio = Integer.parseInt(partes[1]);
             
-            Ingrediente nuevoIngrediente = new Ingrediente(nombreIngrediente, precio);
+            IngredienteModificaciones nuevoIngrediente = new IngredienteModificaciones(nombreIngrediente, precio);
 
             ingredientes.put(nombreIngrediente, nuevoIngrediente);
 
@@ -154,7 +151,7 @@ public class Restaurante {
             String nombreProducto = partes[0];
             int precio = Integer.parseInt(partes[1]);
             
-            ProductoMenu nuevoProducto = new ProductoMenu(nombreProducto, precio);
+            ProductoMenuModificaciones nuevoProducto = new ProductoMenuModificaciones(nombreProducto, precio);
 
             menuBase.put(nombreProducto, nuevoProducto);
 
@@ -181,13 +178,13 @@ public class Restaurante {
             String nombreCombo = partes[0];
             double descuento = Double.parseDouble(partes[1].replace("%","")) / 100;
 
-            Combo nuevoCombo = new Combo(nombreCombo, descuento);
+            ComboModificaciones nuevoCombo = new ComboModificaciones(nombreCombo, descuento);
 
             String contenidos = "";
 
             for (int i = 2; i < partes.length; i++) {
                 String nombreProducto = partes[i];
-                ProductoMenu productoAgregar = menuBase.get(nombreProducto);
+                ProductoMenuModificaciones productoAgregar = menuBase.get(nombreProducto);
 
                 nuevoCombo.agregarItemACombo(productoAgregar);
 
@@ -253,9 +250,9 @@ public class Restaurante {
 
             if(menuBase.containsKey(nombreProducto)){
 
-                ProductoMenu productoMenuBase = menuBase.get(nombreProducto);
+                ProductoMenuModificaciones productoMenuBase = menuBase.get(nombreProducto);
 
-                ProductoMenu clonProducto = (ProductoMenu)productoMenuBase.clone();
+                ProductoMenuModificaciones clonProducto = (ProductoMenuModificaciones)productoMenuBase.clone();
 
                 boolean agregarEliminar = true;
 
@@ -267,7 +264,7 @@ public class Restaurante {
 
                     if(respuesta.equals("y") || respuesta.equals("Y")){
 
-                        ProductoAjustado clonAjustado = new ProductoAjustado(clonProducto);
+                        ProductoAjustadoModificaciones clonAjustado = new ProductoAjustadoModificaciones(clonProducto);
 
                         while(agregarEliminar){
 
@@ -284,7 +281,7 @@ public class Restaurante {
 
                                     int opcionIngrediente = Integer.parseInt(input("ingrese el numero de ingrediente que desea agregar"));
 
-                                    if (opcionIngrediente > numeroIngredientes || opcionIngrediente < 1) {
+                                    if (opcionIngrediente > numeroIngredientes || opcionIngrediente < 0) {
                                         System.out.println("La opción ingresada no es válida");
                                     }
 
@@ -292,9 +289,9 @@ public class Restaurante {
                                         opcionCorrecta = false;
 
                                         String nombreIngrediente = mapaOpcionesIngredientes.get(opcionIngrediente);
-                                        Ingrediente ingredienteBase = ingredientes.get(nombreIngrediente);
+                                        IngredienteModificaciones ingredienteBase = ingredientes.get(nombreIngrediente);
 
-                                        Ingrediente clonIngrediente = (Ingrediente)ingredienteBase.clone();
+                                        IngredienteModificaciones clonIngrediente = (IngredienteModificaciones)ingredienteBase.clone();
 
                                         clonAjustado.agregarIngrediente(clonIngrediente);
 
@@ -315,7 +312,7 @@ public class Restaurante {
 
                                     int opcionIngrediente = Integer.parseInt(input("ingrese el numero de ingrediente que desea agregar"));
 
-                                    if (opcionIngrediente > numeroIngredientes || opcionIngrediente < 1) {
+                                    if (opcionIngrediente > numeroIngredientes || opcionIngrediente < 0) {
                                         System.out.println("Opción escogida no es válida");
                                     }
 
@@ -323,9 +320,9 @@ public class Restaurante {
                                         opcionCorrecta = false;
 
                                         String nombreIngrediente = mapaOpcionesIngredientes.get(opcionIngrediente);
-                                        Ingrediente ingredienteBase = ingredientes.get(nombreIngrediente);
+                                        IngredienteModificaciones ingredienteBase = ingredientes.get(nombreIngrediente);
 
-                                        Ingrediente clonIngrediente = (Ingrediente)ingredienteBase.clone();
+                                        IngredienteModificaciones clonIngrediente = (IngredienteModificaciones)ingredienteBase.clone();
 
                                         clonAjustado.quitarIngrediente(clonIngrediente);
 
@@ -369,9 +366,9 @@ public class Restaurante {
 
             else if(combos.containsKey(nombreProducto)){
 
-                Combo productoCombo = combos.get(nombreProducto);
+                ComboModificaciones productoCombo = combos.get(nombreProducto);
 
-                Combo clonCombo = (Combo)productoCombo.clone();
+                ComboModificaciones clonCombo = (ComboModificaciones)productoCombo.clone();
 
                 pedidoEnCurso.agregarProducto(clonCombo);
 
@@ -416,7 +413,7 @@ public class Restaurante {
 
         if(pedidos.containsKey(idPedido)) {
             
-            Pedido pedidoConsultar = pedidos.get(idPedido);
+            PedidoModificaciones pedidoConsultar = pedidos.get(idPedido);
 
             System.out.println(pedidoConsultar.consultarPedido());
 
@@ -433,7 +430,7 @@ public class Restaurante {
 
     //Constructor
 
-    public Restaurante() {
+    public RestauranteModificaciones() {
         this.numeroMenu = 0;
         this.numeroIngredientes = 0;
 

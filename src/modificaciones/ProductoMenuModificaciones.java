@@ -1,6 +1,6 @@
-package modelo;
+package modificaciones;
 
-public class ProductoMenu implements Producto, Cloneable{
+public class ProductoMenuModificaciones implements ProductoModificaciones, Cloneable{
     //Atributos
 
     private String nombre;
@@ -33,7 +33,7 @@ public class ProductoMenu implements Producto, Cloneable{
 
     //Generator
 
-    public ProductoMenu(String nombre, int precioBase) {
+    public ProductoMenuModificaciones(String nombre, int precioBase) {
         this.nombre = nombre;
         this.precioBase = precioBase;
     }

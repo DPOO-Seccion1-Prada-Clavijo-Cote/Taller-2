@@ -1,9 +1,9 @@
-package procesamiento;
+package original.procesamiento;
 
 import java.util.ArrayList;
 
-import modelo.Producto;
-import modelo.ProductoMenu;
+import original.modelo.Producto;
+import original.modelo.ProductoMenu;
 
 public class Combo implements Producto, Cloneable{
     //Atributos 

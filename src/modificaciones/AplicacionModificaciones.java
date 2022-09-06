@@ -1,4 +1,4 @@
-package aplicacion;
+package modificaciones;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,14 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import modelo.Restaurante;
 
-
-public class Aplicacion {
+public class AplicacionModificaciones {
     
     //Atributos
 
-    private Restaurante restaurante;
+    private RestauranteModificaciones restaurante;
 
     //Métodos
 
@@ -123,15 +121,15 @@ public class Aplicacion {
 
     public static void main(String[] args) throws CloneNotSupportedException, FileNotFoundException, IOException {
 
-        Aplicacion app = new Aplicacion();
+        AplicacionModificaciones app = new AplicacionModificaciones();
 
         app.ejecutarAplicacion();
     
     }
 
-    public Aplicacion() {
+    public AplicacionModificaciones() {
     
-            this.restaurante = new Restaurante();
+            this.restaurante = new RestauranteModificaciones();
     
     }
 
