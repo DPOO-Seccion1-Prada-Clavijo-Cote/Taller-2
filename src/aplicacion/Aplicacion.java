@@ -75,7 +75,7 @@ public class Aplicacion {
         restaurante.cargarInformacionRestaurante(archivoIngredientes, archivoMenu, archivoCombos);
     }
 
-    public void iniciarPedido() {
+    public void iniciarPedido() throws CloneNotSupportedException {
         System.out.println("\n" + "Iniciar Pedido" + "\n");
 
         String nombreCliente = input("Indique su nombre: ");

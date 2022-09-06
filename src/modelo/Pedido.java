@@ -1,6 +1,8 @@
 package modelo;
 
 import modelo.Producto;
+import procesamiento.Combo;
+import procesamiento.PoductoAjustado;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,11 +22,33 @@ public class Pedido {
         return idPedido;
     }
 
+    public String getProductosEnPedido() {
+
+        String productosString = "";
+
+        for (int i = 0; i < itemsPedido.size(); i++) {
+            
+            Producto itemActual = itemsPedido.get(i);
+
+            String nombreItem = itemActual.getNombre();
+
+            productosString = productosString + i + ") " + nombreItem + "\n";
+        }
+
+        return productosString;
+
+
+    }
+
+    public int getNumeroDeProductosPedido() {
+        return itemsPedido.size();
+    }
+
     //Metodos
 
-    public void agregarProducto(Producto nuvoItem) {
+    public void agregarProducto(Producto nuevoItem) {
         
-        itemsPedido.add(nuvoItem);
+        itemsPedido.add(nuevoItem);
 
     }
 
@@ -58,6 +82,10 @@ public class Pedido {
 
         return id;
 
+    }
+
+    public void eliminarProducto(int indiceProducto) {  
+        itemsPedido.remove(indiceProducto);
     }
 
     //Constructor

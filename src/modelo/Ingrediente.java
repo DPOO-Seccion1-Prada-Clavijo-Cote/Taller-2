@@ -1,6 +1,6 @@
 package modelo;
 
-public class Ingrediente {
+public class Ingrediente implements Cloneable {
     //Atributos
     private String nombre;
     private int costoAdicional;
@@ -30,5 +30,9 @@ public class Ingrediente {
         this.nombre = nombre;
         this.costoAdicional = costoAdicional;
     }    
+
+    public Object clone()throws CloneNotSupportedException{  
+        return super.clone();  
+    }  
 
 }

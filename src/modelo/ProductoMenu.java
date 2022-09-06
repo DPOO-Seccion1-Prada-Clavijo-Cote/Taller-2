@@ -1,6 +1,6 @@
 package modelo;
 
-public class ProductoMenu implements Producto{
+public class ProductoMenu implements Producto, Cloneable{
     //Atributos
 
     private String nombre;
@@ -38,5 +38,9 @@ public class ProductoMenu implements Producto{
         this.nombre = nombre;
         this.precioBase = precioBase;
     }
+
+    public Object clone()throws CloneNotSupportedException{  
+        return super.clone();  
+    }  
 
 }
