@@ -6,8 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.HashMap;
 
 import procesamiento.Combo;
@@ -46,6 +45,7 @@ public class Restaurante {
 
             int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
 
+            System.out.println();
             if (opcion_seleccionada == 1) {
                 imprimirMenuTexto();
             }
@@ -74,8 +74,33 @@ public class Restaurante {
 
     public void cerrarYGuardarPedidoEnCurso() {
         
+        if(pedidoEnCurso != null){
+            int idPedidoActual = pedidoEnCurso.getIdPedido();
+            String nombreArchivo = "Taller-2/data/Facturas/Factura-" + idPedidoActual + ".txt";
 
+            try {
+                File myObj = new File(nombreArchivo);
+                
+                if (myObj.createNewFile()) {
+                    pedidoEnCurso.guardarFactura(myObj);
+                } 
+                
+                else {
+                    PrintWriter writer = new PrintWriter(myObj);
+                    writer.print("");
+                    writer.close();
+                    pedidoEnCurso.guardarFactura(myObj);
 
+                }
+
+                pedidos.put(idPedidoActual, pedidoEnCurso);
+                pedidoEnCurso = null;
+
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -103,10 +128,11 @@ public class Restaurante {
 
             ingredientes.put(nombreIngrediente, nuevoIngrediente);
 
-            menuTexto = menuTexto + numeroIngredientes +") " + nombreIngrediente + ": " + precio + "\n";
+            menuIngredientes = menuIngredientes + numeroIngredientes +") " + nombreIngrediente + ": " + precio + "\n";
             
             mapaOpcionesIngredientes.put(numeroIngredientes, nombreIngrediente);
 
+            linea = br.readLine();
             numeroIngredientes ++;
         }
 
@@ -135,6 +161,7 @@ public class Restaurante {
             menuTexto = menuTexto + numeroMenu +") " + nombreProducto + ": " + precio + "\n";
             mapaOpcionesMenu.put(numeroMenu, nombreProducto);
 
+            linea = br.readLine();
             numeroMenu++;
         }
         
@@ -160,18 +187,21 @@ public class Restaurante {
 
             for (int i = 2; i < partes.length; i++) {
                 String nombreProducto = partes[i];
-                Producto productoAgregar = menuBase.get(nombreProducto);
+                ProductoMenu productoAgregar = menuBase.get(nombreProducto);
 
                 nuevoCombo.agregarItemACombo(productoAgregar);
 
                 contenidos = contenidos + nombreProducto + "\n";
             }
 
+            combos.put(nuevoCombo.getNombre(), nuevoCombo);
+
             int precioCombo = nuevoCombo.getPrecio();
 
             menuTexto = menuTexto + numeroMenu +") " + nombreCombo + ": " + precioCombo + "\n" + contenidos + "\n";
             mapaOpcionesMenu.put(numeroMenu, nombreCombo);
 
+            linea = br.readLine();
             numeroMenu++;
 
         }
@@ -182,6 +212,7 @@ public class Restaurante {
     }
 
     private void imprimirOpciones() {
+        System.out.println("\n");
         System.out.println("1) Consultar Menú");
         System.out.println("2) Agregar Producto");
         System.out.println("3) Quitar Producto");
@@ -189,7 +220,7 @@ public class Restaurante {
 
     }
 
-    private void imprimirMenuTexto() {
+    public void imprimirMenuTexto() {
         System.out.println(menuTexto);
     }
 
@@ -219,7 +250,7 @@ public class Restaurante {
 
         else {
             String nombreProducto = mapaOpcionesMenu.get(numProducto);
-            
+
             if(menuBase.containsKey(nombreProducto)){
 
                 ProductoMenu productoMenuBase = menuBase.get(nombreProducto);
@@ -232,7 +263,9 @@ public class Restaurante {
 
                     String respuesta = input("Desea agregarle o eliminar alguno de los ingredientes al producto? (y/n)");
 
-                    if (respuesta == "y" || respuesta == "Y"){
+                    System.out.println(respuesta);
+
+                    if(respuesta.equals("y") || respuesta.equals("Y")){
 
                         PoductoAjustado clonAjustado = new PoductoAjustado(clonProducto);
 
@@ -252,7 +285,7 @@ public class Restaurante {
                                     int opcionIngrediente = Integer.parseInt(input("ingrese el numero de ingrediente que desea agregar"));
 
                                     if (opcionIngrediente > numeroIngredientes || opcionIngrediente < 1) {
-                                        System.out.println("Opción escogida no es válida");
+                                        System.out.println("La opción ingresada no es válida");
                                     }
 
                                     else {
@@ -320,7 +353,7 @@ public class Restaurante {
 
                     }
 
-                    else if (respuesta == "n" || respuesta == "N"){
+                    else if (respuesta.equals("n")|| respuesta.equals("N")){
                         agregarEliminar = false;
 
                         pedidoEnCurso.agregarProducto(clonProducto);
@@ -379,13 +412,41 @@ public class Restaurante {
 
     }
 
-    //Getters
+    public void consultarPedido(int idPedido) {
+
+        if(pedidos.containsKey(idPedido)) {
+            
+            Pedido pedidoConsultar = pedidos.get(idPedido);
+
+            System.out.println(pedidoConsultar.consultarPedido());
+
+        }
+
+        else {
+            System.out.println("No se encontró ningún pedido con ese id");
+
+
+        }
+
+
+    }
 
     //Constructor
 
     public Restaurante() {
         this.numeroMenu = 0;
         this.numeroIngredientes = 0;
+
+        this.combos = new HashMap<>();
+        this.ingredientes = new HashMap<>();
+        this.menuBase = new HashMap<>();
+        this.mapaOpcionesIngredientes = new HashMap<>();
+        this.mapaOpcionesMenu = new HashMap<>();
+        this.pedidos = new HashMap<>();
+        
+        this.menuIngredientes = "";
+        this.menuTexto = "";
+
     }
 
 }

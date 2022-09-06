@@ -14,8 +14,10 @@ public class Combo implements Producto, Cloneable{
     
     //Metodos
 
-    public void agregarItemACombo(Producto itemCombo) {
-        
+    public void agregarItemACombo(ProductoMenu itemCombo) {
+    
+        itemsCombo.add(itemCombo);
+
     }
     
     //Constructor
@@ -23,6 +25,7 @@ public class Combo implements Producto, Cloneable{
     public Combo(String nombreCombo, double descuento) {
         this.descuento = descuento;
         this.nombreCombo = nombreCombo;
+        this.itemsCombo = new ArrayList<>();
     }
 
     public Object clone()throws CloneNotSupportedException{  
@@ -32,17 +35,16 @@ public class Combo implements Producto, Cloneable{
     
     @Override
     public int getPrecio() {
-        
+
         int precioSuma = 0;
 
         for (ProductoMenu productoMenu : itemsCombo) {
-            
-            precioSuma += productoMenu.getPrecio();
 
+            precioSuma += productoMenu.getPrecio();
 
         }
 
-        int precioActual = (int) (precioSuma * (1-descuento));
+        int precioActual = (int) (precioSuma * (1 - descuento));
 
         return precioActual;
     }
@@ -54,8 +56,14 @@ public class Combo implements Producto, Cloneable{
 
     @Override
     public String generarTextoFactura() {
-        // TODO Auto-generated method stub
-        return null;
+        
+        String textoFactura = "";
+        
+        for (ProductoMenu productoMenu : itemsCombo) {
+            textoFactura += productoMenu.generarTextoFactura();
+        }
+
+        return textoFactura;
     }  
 
 }

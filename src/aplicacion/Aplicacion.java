@@ -17,7 +17,9 @@ public class Aplicacion {
 
     //Métodos
 
-    public void ejecutarAplicacion() {
+    public void ejecutarAplicacion() throws CloneNotSupportedException, FileNotFoundException, IOException {
+
+        cargarInformacion();
         
         System.out.println("Restaurante de alta clase");
 
@@ -27,7 +29,12 @@ public class Aplicacion {
             try {
                 mostrarMenu();
 				int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
-                ejecutarOpcion(opcion_seleccionada);
+                boolean respuesta = ejecutarOpcion(opcion_seleccionada);
+
+                if (respuesta) {
+                    continuar = false;
+                }
+
             }
 
             catch (NumberFormatException e) {
@@ -42,11 +49,37 @@ public class Aplicacion {
 		System.out.println("1. Iniciar un nuevo pedido");
 		System.out.println("2. Consultar un pedido");
         System.out.println("3. Consultar el menú");
-		System.out.println("5. Salir de la aplicación\n");
+		System.out.println("4. Salir de la aplicación\n");
+        
     }
 
-    public void ejecutarOpcion(int opcionSeleccionada) {
+    public boolean ejecutarOpcion(int opcionSeleccionada) throws CloneNotSupportedException {
         
+        boolean respuesta = false;
+
+        if(opcionSeleccionada == 1) {
+            iniciarPedido();
+        }
+
+        else if(opcionSeleccionada == 2) {
+            int idPedido = Integer.parseInt(input("Ingrese el id del pedido que desea consultar"));
+
+            restaurante.consultarPedido(idPedido);
+        }
+
+        else if (opcionSeleccionada == 3) {
+            consultarMenu();
+        }
+
+        else if (opcionSeleccionada == 4) {
+            respuesta = true;
+        }
+
+        else {
+            System.out.println("La opción ingresada no es válida");
+        }
+        
+        return respuesta;
     }
 
     public String input(String mensaje)
@@ -66,16 +99,16 @@ public class Aplicacion {
 	}
 
     public void cargarInformacion()  throws FileNotFoundException, IOException {
-        System.out.println("\n" + "Cargar un archivo de atletas" + "\n");
+        System.out.println("\n" + "---Cargando Archivos---" + "\n");
 
-        File archivoIngredientes = new File("./data/ingredientes.txt");
-        File archivoMenu = new File("./data/menu.txt");
-        File archivoCombos = new File("./data/combos.txt");
+        File archivoIngredientes = new File("Taller-2/data/ingredientes.txt");
+        File archivoMenu = new File("Taller-2/data/menu.txt");
+        File archivoCombos = new File("Taller-2/data/combos.txt");
         
         restaurante.cargarInformacionRestaurante(archivoIngredientes, archivoMenu, archivoCombos);
     }
 
-    public void iniciarPedido() throws CloneNotSupportedException {
+    private void iniciarPedido() throws CloneNotSupportedException {
         System.out.println("\n" + "Iniciar Pedido" + "\n");
 
         String nombreCliente = input("Indique su nombre: ");
@@ -84,18 +117,25 @@ public class Aplicacion {
         restaurante.iniciarPedido(nombreCliente, direccionCliente);
     }
 
-    public void cerrarPedido() {
-        
-        restaurante.cerrarYGuardarPedidoEnCurso();
-
+    public void consultarMenu() {
+        restaurante.imprimirMenuTexto();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException, FileNotFoundException, IOException {
 
         Aplicacion app = new Aplicacion();
 
         app.ejecutarAplicacion();
     
     }
+
+    public Aplicacion() {
+    
+            this.restaurante = new Restaurante();
+    
+    }
+
+    
+
 
 }

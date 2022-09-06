@@ -26,9 +26,8 @@ public class ProductoMenu implements Producto, Cloneable{
 
     //Metodos
 
-    public String generarTextoFactura() {
-        String textoFactura = "";
-
+    public String generarTextoFactura() {     
+        String textoFactura = nombre + ": " + precioBase + "\n";
         return textoFactura;
     }
 
@@ -41,6 +40,11 @@ public class ProductoMenu implements Producto, Cloneable{
 
     public Object clone()throws CloneNotSupportedException{  
         return super.clone();  
+    }
+
+    @Override
+    public int getPrecio() {
+        return precioBase;
     }  
 
 }
