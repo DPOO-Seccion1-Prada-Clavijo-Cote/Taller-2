@@ -6,7 +6,7 @@ import modelo.Ingrediente;
 import modelo.Producto;
 import modelo.ProductoMenu;
 
-public class PoductoAjustado implements Producto{
+public class ProductoAjustado implements Producto{
     //Atributos 
 
     private ProductoMenu base;
@@ -16,7 +16,7 @@ public class PoductoAjustado implements Producto{
 
     //Constructor
 
-    public PoductoAjustado(ProductoMenu base) {
+    public ProductoAjustado(ProductoMenu base) {
         this.base = base;
 
         this.agregados = new ArrayList<>();

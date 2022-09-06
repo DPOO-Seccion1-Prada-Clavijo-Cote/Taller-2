@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 
 import procesamiento.Combo;
-import procesamiento.PoductoAjustado;
+import procesamiento.ProductoAjustado;
 
 public class Restaurante {
     //Atributos
@@ -267,7 +267,7 @@ public class Restaurante {
 
                     if(respuesta.equals("y") || respuesta.equals("Y")){
 
-                        PoductoAjustado clonAjustado = new PoductoAjustado(clonProducto);
+                        ProductoAjustado clonAjustado = new ProductoAjustado(clonProducto);
 
                         while(agregarEliminar){
 
