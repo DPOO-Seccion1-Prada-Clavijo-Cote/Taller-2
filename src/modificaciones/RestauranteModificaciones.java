@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Set;
 
 public class RestauranteModificaciones {
     //Atributos
@@ -18,6 +19,7 @@ public class RestauranteModificaciones {
     private HashMap<String, IngredienteModificaciones> ingredientes;
     private HashMap<String, ProductoMenuModificaciones> menuBase;
     private HashMap<String, ComboModificaciones> combos;
+    private HashMap<String, Bebida> bebidas;
 
     private String menuTexto;
     private String menuIngredientes;
@@ -90,6 +92,28 @@ public class RestauranteModificaciones {
 
                 }
 
+                Boolean pedidoSimilar = false;
+                int idPedidoSimilar = 0;
+                Set<Integer> llaves = pedidos.keySet();
+
+
+                for (Integer llave : llaves) {
+                    PedidoModificaciones pedidoPrueba = pedidos.get(llave);
+                    pedidoSimilar = comprobarPedidosIguales(pedidoEnCurso, pedidoPrueba);
+                    if(pedidoSimilar) {
+                        idPedidoSimilar = pedidoPrueba.getIdPedido();
+                        break;
+                    }
+                }
+
+                if(pedidoSimilar) {
+                    System.out.println("\nEl pedido actual es igual al pedido con ID " + idPedidoSimilar + "\n");
+                }
+
+                else {
+                    System.out.println("\nEl pedido actual no es igual a ningún otro pedido cerrado\n");
+                }
+
                 pedidos.put(idPedidoActual, pedidoEnCurso);
                 pedidoEnCurso = null;
 
@@ -101,11 +125,13 @@ public class RestauranteModificaciones {
 
     }
 
-    public void cargarInformacionRestaurante(File archivoIngredientes, File archivoMenu, File archivoCombos) throws FileNotFoundException, IOException, NumberFormatException {
+    public void cargarInformacionRestaurante(File archivoIngredientes, File archivoMenu, File archivoCombos, File archivoBebidas) throws FileNotFoundException, IOException, NumberFormatException, CloneNotSupportedException {
 
         cargarMenu(archivoMenu);
+        cargarBebidas(archivoBebidas);
         cargarCombos(archivoCombos);
         CargarIngredientes(archivoIngredientes);
+
     }
 
     private void CargarIngredientes(File archivoIngredientes) throws FileNotFoundException, IOException, NumberFormatException {
@@ -120,8 +146,9 @@ public class RestauranteModificaciones {
             String[] partes = linea.split(";");
             String nombreIngrediente = partes[0];
             int precio = Integer.parseInt(partes[1]);
+            int calorias = Integer.parseInt(partes[2]);
             
-            IngredienteModificaciones nuevoIngrediente = new IngredienteModificaciones(nombreIngrediente, precio);
+            IngredienteModificaciones nuevoIngrediente = new IngredienteModificaciones(nombreIngrediente, precio, calorias);
 
             ingredientes.put(nombreIngrediente, nuevoIngrediente);
 
@@ -150,8 +177,10 @@ public class RestauranteModificaciones {
             String[] partes = linea.split(";");
             String nombreProducto = partes[0];
             int precio = Integer.parseInt(partes[1]);
+            int calorias = Integer.parseInt(partes[2]);
+
             
-            ProductoMenuModificaciones nuevoProducto = new ProductoMenuModificaciones(nombreProducto, precio);
+            ProductoMenuModificaciones nuevoProducto = new ProductoMenuModificaciones(nombreProducto, precio, calorias);
 
             menuBase.put(nombreProducto, nuevoProducto);
 
@@ -165,7 +194,7 @@ public class RestauranteModificaciones {
         br.close();
     }
     
-    private void cargarCombos(File archivoCombos) throws FileNotFoundException, IOException, NumberFormatException {
+    private void cargarCombos(File archivoCombos) throws FileNotFoundException, IOException, NumberFormatException, CloneNotSupportedException {
         BufferedReader br = new BufferedReader(new FileReader(archivoCombos));
 		String linea = br.readLine();
 		linea = br.readLine();
@@ -184,11 +213,26 @@ public class RestauranteModificaciones {
 
             for (int i = 2; i < partes.length; i++) {
                 String nombreProducto = partes[i];
-                ProductoMenuModificaciones productoAgregar = menuBase.get(nombreProducto);
 
-                nuevoCombo.agregarItemACombo(productoAgregar);
+                if(menuBase.containsKey(nombreProducto)){
+                    ProductoMenuModificaciones productoOriginal = menuBase.get(nombreProducto);
 
-                contenidos = contenidos + nombreProducto + "\n";
+                    ProductoMenuModificaciones productoAgregar = (ProductoMenuModificaciones) productoOriginal.clone();
+
+                    nuevoCombo.agregarItemACombo(productoAgregar);
+
+                    contenidos = contenidos + nombreProducto + "\n";
+                }
+                else if (bebidas.containsKey(nombreProducto)) {
+                    Bebida bebidaOriginal = bebidas.get(nombreProducto);
+
+                    Bebida bebidaAgregar = (Bebida) bebidaOriginal.clone();
+                    
+                    nuevoCombo.agregarItemACombo(bebidaAgregar);
+
+                    contenidos = contenidos + nombreProducto + "\n";
+                }
+                
             }
 
             combos.put(nuevoCombo.getNombre(), nuevoCombo);
@@ -203,6 +247,36 @@ public class RestauranteModificaciones {
 
         }
 
+        br.close();
+
+
+    }
+
+    private void cargarBebidas(File archivoBebidas) throws FileNotFoundException, IOException, NumberFormatException {
+        BufferedReader br = new BufferedReader(new FileReader(archivoBebidas));
+		String linea = br.readLine();
+		linea = br.readLine();
+
+        //crear bebidas
+        menuTexto = menuTexto + "\n***Bebidas***\n";
+
+        while (linea != null) {
+            String[] partes = linea.split(";");
+            String nombreBebida = partes[0];
+            int precio = Integer.parseInt(partes[1]);
+            int calorias = Integer.parseInt(partes[2]);
+            
+            Bebida nuevaBebida = new Bebida(nombreBebida, precio, calorias);
+
+            bebidas.put(nombreBebida, nuevaBebida);
+
+            menuTexto = menuTexto + numeroMenu +") " + nombreBebida + ": " + precio + "\n";
+            mapaOpcionesMenu.put(numeroMenu, nombreBebida);
+
+            linea = br.readLine();
+            numeroMenu++;
+        }
+        
         br.close();
 
 
@@ -364,6 +438,14 @@ public class RestauranteModificaciones {
                 
             }
 
+            else if(bebidas.containsKey(nombreProducto)){
+                Bebida productoBebida = bebidas.get(nombreProducto);
+
+                Bebida clonBebida = (Bebida)productoBebida.clone();
+
+                pedidoEnCurso.agregarProducto(clonBebida);
+            }
+
             else if(combos.containsKey(nombreProducto)){
 
                 ComboModificaciones productoCombo = combos.get(nombreProducto);
@@ -428,6 +510,11 @@ public class RestauranteModificaciones {
 
     }
 
+    private boolean comprobarPedidosIguales(PedidoModificaciones pedidoActual, PedidoModificaciones pedidoPrueba) {
+        return pedidoActual.equals(pedidoPrueba);
+    }
+
+
     //Constructor
 
     public RestauranteModificaciones() {
@@ -437,6 +524,7 @@ public class RestauranteModificaciones {
         this.combos = new HashMap<>();
         this.ingredientes = new HashMap<>();
         this.menuBase = new HashMap<>();
+        this.bebidas = new HashMap<>();
         this.mapaOpcionesIngredientes = new HashMap<>();
         this.mapaOpcionesMenu = new HashMap<>();
         this.pedidos = new HashMap<>();

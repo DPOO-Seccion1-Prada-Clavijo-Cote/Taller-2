@@ -96,14 +96,15 @@ public class AplicacionModificaciones {
 		return null;
 	}
 
-    public void cargarInformacion()  throws FileNotFoundException, IOException {
+    public void cargarInformacion()  throws FileNotFoundException, IOException, NumberFormatException, CloneNotSupportedException {
         System.out.println("\n" + "---Cargando Archivos---" + "\n");
 
-        File archivoIngredientes = new File("Taller-2/data/ingredientes.txt");
-        File archivoMenu = new File("Taller-2/data/menu.txt");
-        File archivoCombos = new File("Taller-2/data/combos.txt");
+        File archivoIngredientes = new File("Taller-2/data/Modificaciones/ingredientesModificaciones.txt");
+        File archivoMenu = new File("Taller-2/data/Modificaciones/menuModificaciones.txt");
+        File archivoCombos = new File("Taller-2/data/Modificaciones/combosModificaciones.txt");
+        File archivoBebidas = new File("Taller-2/data/Modificaciones/bebidasModificaciones.txt");
         
-        restaurante.cargarInformacionRestaurante(archivoIngredientes, archivoMenu, archivoCombos);
+        restaurante.cargarInformacionRestaurante(archivoIngredientes, archivoMenu, archivoCombos, archivoBebidas);
     }
 
     private void iniciarPedido() throws CloneNotSupportedException {
@@ -132,8 +133,5 @@ public class AplicacionModificaciones {
             this.restaurante = new RestauranteModificaciones();
     
     }
-
-    
-
 
 }

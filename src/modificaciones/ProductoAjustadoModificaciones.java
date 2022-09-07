@@ -43,13 +43,13 @@ public class ProductoAjustadoModificaciones implements ProductoModificaciones{
     @Override
     public String generarTextoFactura() {
 
-        String textoFactura = base.getNombre() + ": " + base.getPrecio() + "\n";
+        String textoFactura = base.generarTextoFactura();
 
         if(agregados.size() > 0){
             textoFactura += "Con adición de: \n";
             
             for (IngredienteModificaciones ingrediente : agregados) {
-                textoFactura += "---" + ingrediente.getNombre() + ": " + ingrediente.getCostoAdicional() + "---\n";
+                textoFactura += " ---" + ingrediente.getNombre() + ": " + ingrediente.getCostoAdicional() + "---\n";
             }
         }
 
@@ -71,6 +71,23 @@ public class ProductoAjustadoModificaciones implements ProductoModificaciones{
 
     public void quitarIngrediente(IngredienteModificaciones ingrediente) {
         eliminados.add(ingrediente);
+    }
+
+
+    @Override
+    public int getCalorias() {
+        int caloriasReturn = base.getCalorias();
+
+        for (IngredienteModificaciones ingredienteModificaciones : agregados) {
+            caloriasReturn += ingredienteModificaciones.getCalorias();
+        }
+
+        for (IngredienteModificaciones ingredienteModificaciones : eliminados) {
+            caloriasReturn -= ingredienteModificaciones.getCalorias();
+        }
+
+
+        return caloriasReturn;
     }
 
 }

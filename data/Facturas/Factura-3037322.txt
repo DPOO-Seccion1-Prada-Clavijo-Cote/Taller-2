@@ -1,0 +1,18 @@
+Nombre Cliente: Nicolas --- Direcci�n Cliente: Calle 166 --- Id Pedido: 3037322
+especial: 24000 --- Cal: 500
+papas medianas: 5500 --- Cal: 120
+gaseosa: 5000 --- Cal: 84
+1/2 libra: 25000 --- Cal: 1600
+Con adici�n de: 
+---pepinillos: 2500---
+---frijol refrito: 4500---
+---tocineta picada: 6000---
+Sin: 
+---tomate---
+mexicana: 22000 --- Cal: 320
+-------------------------------------
+ Precio Neto: 92084
+ Precio IVA: 17495
+ Precio Total: 109579
+-------------------------------------
+Total Calorias: 2895

@@ -7,11 +7,11 @@ public class ComboModificaciones implements ProductoModificaciones, Cloneable{
 
     private double descuento;
     private String nombreCombo;
-    private ArrayList<ProductoMenuModificaciones> itemsCombo;
+    private ArrayList<ProductoModificaciones> itemsCombo;
     
     //Metodos
 
-    public void agregarItemACombo(ProductoMenuModificaciones itemCombo) {
+    public void agregarItemACombo(ProductoModificaciones itemCombo) {
     
         itemsCombo.add(itemCombo);
 
@@ -35,10 +35,8 @@ public class ComboModificaciones implements ProductoModificaciones, Cloneable{
 
         int precioSuma = 0;
 
-        for (ProductoMenuModificaciones productoMenu : itemsCombo) {
-
-            precioSuma += productoMenu.getPrecio();
-
+        for (ProductoModificaciones producto : itemsCombo) {
+            precioSuma += producto.getPrecio();
         }
 
         int precioActual = (int) (precioSuma * (1 - descuento));
@@ -56,11 +54,25 @@ public class ComboModificaciones implements ProductoModificaciones, Cloneable{
         
         String textoFactura = "";
         
-        for (ProductoMenuModificaciones productoMenu : itemsCombo) {
-            textoFactura += productoMenu.generarTextoFactura();
+        for (ProductoModificaciones producto : itemsCombo) {
+            textoFactura += producto.generarTextoFactura();
         }
 
         return textoFactura;
+    }
+
+    @Override
+    public int getCalorias() {
+        
+        int caloriasReturn = 0;
+
+
+        for (ProductoModificaciones producto : itemsCombo) {
+            caloriasReturn += producto.getCalorias();
+        }
+
+
+        return caloriasReturn;
     }  
 
 }

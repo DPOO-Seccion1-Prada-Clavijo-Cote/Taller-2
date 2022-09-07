@@ -5,6 +5,7 @@ public class ProductoMenuModificaciones implements ProductoModificaciones, Clone
 
     private String nombre;
     private int precioBase;
+    private int calorias;
     
     //Getters & Setters
     
@@ -12,30 +13,19 @@ public class ProductoMenuModificaciones implements ProductoModificaciones, Clone
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public int getPrecioBase() {
-        return precioBase;
-    }
-
-    public void setPrecioBase(int precioBase) {
-        this.precioBase = precioBase;
-    } 
-
     //Metodos
 
     public String generarTextoFactura() {     
-        String textoFactura = nombre + ": " + precioBase + "\n";
+        String textoFactura = nombre + ": " + precioBase + " --- Cal: "+ calorias + "\n";
         return textoFactura;
     }
 
     //Generator
 
-    public ProductoMenuModificaciones(String nombre, int precioBase) {
+    public ProductoMenuModificaciones(String nombre, int precioBase, int calorias) {
         this.nombre = nombre;
         this.precioBase = precioBase;
+        this.calorias = calorias;
     }
 
     public Object clone()throws CloneNotSupportedException{  
@@ -45,6 +35,11 @@ public class ProductoMenuModificaciones implements ProductoModificaciones, Clone
     @Override
     public int getPrecio() {
         return precioBase;
+    }
+
+    @Override
+    public int getCalorias() {
+        return calorias;
     }  
 
 }

@@ -86,8 +86,22 @@ public class PedidoModificaciones {
         
         textoFactura += "-------------------------------------";
         textoFactura += "\n Precio Neto: " + getPrecioNetoPedido() + "\n Precio IVA: " + getPrecioIVAPedido() + "\n Precio Total: " + getPrecioTotalPedido() + "\n";
+        textoFactura += "-------------------------------------\n";
+        textoFactura += "Total Calorias: " + getCaloriasNeto();
 
         return textoFactura;
+    }
+
+    private int getCaloriasNeto() {
+        
+        int caloriasNeto = 0;
+
+        for (ProductoModificaciones producto : itemsPedido) {
+            caloriasNeto += producto.getCalorias();
+        }
+
+        return caloriasNeto;
+
     }
 
     public void guardarFactura(File archivo) {
@@ -146,6 +160,35 @@ public class PedidoModificaciones {
     public void eliminarProducto(int indiceProducto) {  
         itemsPedido.remove(indiceProducto);
     }
+
+    @Override  
+    public boolean equals(Object obj)   
+    {  
+        if (obj == null)   
+        return false;  
+        
+        if (obj == this)  
+        return true;  
+        
+        else {
+
+            if(this.itemsPedido.size() == ((PedidoModificaciones)obj).itemsPedido.size()){
+                boolean todosIguales = true;
+                
+                for (int i = 0; i < this.itemsPedido.size(); i++) {
+                    todosIguales = this.itemsPedido.get(i).equals(((PedidoModificaciones)obj).itemsPedido.get(i));
+                    
+                }
+
+                return todosIguales;
+
+            }
+            else{
+                return false;
+            }
+        }
+          
+    }  
 
     //Constructor
 
